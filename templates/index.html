@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Capture and Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        img {
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .video-feed img {
+            width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+        }
+
+        .captured-face img {
+            width: 100px;
+            height: auto;
+            border: 2px solid #ddd;
+        }
+
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            color: #f44336;
+        }
+
+        .message {
+            color: #2196F3;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload face to Eye of God info</h1>
+
+        <div class="video-feed">
+            <h2>Video Feed</h2>
+            <img src="{{ url_for('video_feed') }}">
+        </div>
+
+        <div class="captured-face">
+            <h2>Captured Face</h2>
+            {% if image_exists %}
+                <img src="{{ url_for('static', filename='captured_faces/captured_face.jpg') }}">
+                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                    <button type="submit">Upload</button>
+                </form>
+            {% else %}
+                <p>No face detected. Please ensure your face is visible to the camera.</p>
+            {% endif %}
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+                    {{ message }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
+
